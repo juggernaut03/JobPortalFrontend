@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/Authcontext';
+import LanguageSwitcher from './LanguageSwitcher';
+import TranslationIndicator from './TranslationIndicator';
+
 
 function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -106,6 +109,8 @@ function Navbar() {
                 </li>
               </>
             ) : (
+
+              
               <>
                 {/* Show these links when not logged in */}
                 <li className="nav-item">
@@ -116,6 +121,12 @@ function Navbar() {
                 </li>
               </>
             )}
+
+
+<div className="ms-auto me-3 d-flex align-items-center">
+  <TranslationIndicator className="me-2" />
+  <LanguageSwitcher />
+</div>
           </ul>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/Authcontext';
+import { useTranslation } from '../context/TranslationContext';
 import WorkerService from '../services/workerService';
 
 // Import components
@@ -10,6 +11,8 @@ import UpcomingJobs from '../components/worker/UpcomingJobs';
 import WorkerAvailability from '../components/worker/WorkerAvailability';
 import EarningsSummary from '../components/worker/EarningsSummary';
 import WorkerProfile from '../components/worker/WorkerProfile';
+import TranslatedText from '../components/TranslatedText';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 
 function WorkerDashboard() {
   const [stats, setStats] = useState(null);
@@ -19,6 +22,7 @@ function WorkerDashboard() {
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('dashboard');
   const { user } = useAuth();
+  const { currentLanguage } = useTranslation();
   
   const [worker, setWorker] = useState({
     name: '',
@@ -209,7 +213,7 @@ function WorkerDashboard() {
         <div className="spinner-border text-primary" role="status">
           <span className="visually-hidden">Loading...</span>
         </div>
-        <p className="mt-2">Loading your dashboard...</p>
+        <p className="mt-2"><TranslatedText text="Loading your dashboard..." /></p>
       </div>
     );
   }
@@ -218,10 +222,12 @@ function WorkerDashboard() {
     return (
       <div className="container my-5">
         <div className="alert alert-danger" role="alert">
-          <h4 className="alert-heading">Error!</h4>
-          <p>{error}</p>
+          <h4 className="alert-heading"><TranslatedText text="Error!" /></h4>
+          <p><TranslatedText text={error} /></p>
           <hr />
-          <p className="mb-0">Please try refreshing the page or contact support if the problem persists.</p>
+          <p className="mb-0">
+            <TranslatedText text="Please try refreshing the page or contact support if the problem persists." />
+          </p>
         </div>
       </div>
     );
@@ -236,16 +242,26 @@ function WorkerDashboard() {
             <div className="card-body p-4">
               <div className="d-flex justify-content-between align-items-center">
                 <div>
-                  <h2 className="card-title">Welcome, {worker.name}!</h2>
+                  <h2 className="card-title">
+                    <TranslatedText text={`Welcome, ${worker.name}!`} />
+                  </h2>
                   <p className="card-text mb-0">
                     {worker.profession && (
                       <span className="badge bg-light text-primary me-2">{worker.profession}</span>
                     )}
-                    <span>{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                    <span>
+                      {new Date().toLocaleDateString('en-US', { 
+                        weekday: 'long', 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                      })}
+                    </span>
                   </p>
                 </div>
-                <div className="d-none d-md-block">
-                  <i className="bi bi-person-circle" style={{ fontSize: '3rem' }}></i>
+                <div className="d-none d-md-flex align-items-center">
+                  <LanguageSwitcher />
+                  <i className="bi bi-person-circle ms-3" style={{ fontSize: '3rem' }}></i>
                 </div>
               </div>
             </div>
@@ -262,7 +278,7 @@ function WorkerDashboard() {
                 className={`nav-link ${activeTab === 'dashboard' ? 'active' : ''}`} 
                 onClick={() => setActiveTab('dashboard')}
               >
-                <i className="bi bi-house-door me-1"></i> Dashboard
+                <i className="bi bi-house-door me-1"></i> <TranslatedText text="Dashboard" />
               </button>
             </li>
             <li className="nav-item">
@@ -270,7 +286,7 @@ function WorkerDashboard() {
                 className={`nav-link ${activeTab === 'jobs' ? 'active' : ''}`} 
                 onClick={() => setActiveTab('jobs')}
               >
-                <i className="bi bi-briefcase me-1"></i> My Jobs
+                <i className="bi bi-briefcase me-1"></i> <TranslatedText text="My Jobs" />
                 {stats && stats.pendingRequests > 0 && (
                   <span className="badge bg-danger rounded-pill ms-2">{stats.pendingRequests}</span>
                 )}
@@ -281,7 +297,7 @@ function WorkerDashboard() {
                 className={`nav-link ${activeTab === 'earnings' ? 'active' : ''}`} 
                 onClick={() => setActiveTab('earnings')}
               >
-                <i className="bi bi-cash-coin me-1"></i> Earnings
+                <i className="bi bi-cash-coin me-1"></i> <TranslatedText text="Earnings" />
               </button>
             </li>
             <li className="nav-item">
@@ -289,7 +305,7 @@ function WorkerDashboard() {
                 className={`nav-link ${activeTab === 'profile' ? 'active' : ''}`} 
                 onClick={() => setActiveTab('profile')}
               >
-                <i className="bi bi-person me-1"></i> Profile
+                <i className="bi bi-person me-1"></i> <TranslatedText text="Profile" />
               </button>
             </li>
           </ul>
@@ -307,7 +323,7 @@ function WorkerDashboard() {
 
           <div className="row mb-4">
             <div className="col-md-6 mb-4 mb-md-0">
-              <h4><i className="bi bi-clock me-2"></i>Upcoming Jobs</h4>
+              <h4><i className="bi bi-clock me-2"></i><TranslatedText text="Upcoming Jobs" /></h4>
               <UpcomingJobs 
                 jobs={jobs.filter(job => job.status === 'Upcoming' || job.status === 'scheduled')} 
                 onMarkComplete={handleMarkComplete} 
@@ -315,7 +331,7 @@ function WorkerDashboard() {
               />
             </div>
             <div className="col-md-6">
-              <h4><i className="bi bi-calendar-check me-2"></i>Job Requests</h4>
+              <h4><i className="bi bi-calendar-check me-2"></i><TranslatedText text="Job Requests" /></h4>
               <JobsList 
                 jobs={requests} 
                 onAccept={handleAcceptJob} 
@@ -328,7 +344,7 @@ function WorkerDashboard() {
 
           <div className="row">
             <div className="col-12">
-              <h4><i className="bi bi-calendar me-2"></i>Availability</h4>
+              <h4><i className="bi bi-calendar me-2"></i><TranslatedText text="Availability" /></h4>
               <WorkerAvailability 
                 availability={worker.availability}
                 worker={worker}
@@ -345,7 +361,7 @@ function WorkerDashboard() {
           <div className="col-12 mb-4">
             <div className="card shadow-sm">
               <div className="card-body p-3">
-                <h4 className="card-title">Job Requests</h4>
+                <h4 className="card-title"><TranslatedText text="Job Requests" /></h4>
                 <JobsList 
                   jobs={requests} 
                   onAccept={handleAcceptJob} 
@@ -360,7 +376,7 @@ function WorkerDashboard() {
           <div className="col-12">
             <div className="card shadow-sm">
               <div className="card-body p-3">
-                <h4 className="card-title">All Jobs</h4>
+                <h4 className="card-title"><TranslatedText text="All Jobs" /></h4>
                 <JobsList 
                   jobs={jobs} 
                   onMarkComplete={handleMarkComplete} 
@@ -393,6 +409,14 @@ function WorkerDashboard() {
           </div>
         </div>
       )}
+
+      {/* Language selector for mobile - visible only on small screens */}
+      <div className="d-block d-md-none fixed-bottom bg-light p-2 text-center">
+        <div className="d-flex justify-content-center align-items-center">
+          <small className="me-2"><TranslatedText text="Language:" /></small>
+          <LanguageSwitcher />
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import TranslatedText from '../components/TranslatedText';
 
 function QuickActions() {
   const actions = [
@@ -22,7 +23,7 @@ function QuickActions() {
               <div className={`rounded-circle bg-${action.color} bg-opacity-10 p-2 me-3`}>
                 <i className={`bi ${action.icon} text-${action.color}`}></i>
               </div>
-              <span>{action.title}</span>
+              <TranslatedText text={action.title} />
               <i className="bi bi-chevron-right ms-auto"></i>
             </Link>
           ))}

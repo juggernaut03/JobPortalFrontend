@@ -1,6 +1,10 @@
 import React from 'react';
+import { useTranslation } from '../../context/TranslationContext';
+import TranslatedText from '../TranslatedText';
 
 function WorkerStats({ stats }) {
+  const { currentLanguage } = useTranslation();
+  
   return (
     <div className="row g-3">
       <div className="col-6 col-lg-3">
@@ -11,7 +15,9 @@ function WorkerStats({ stats }) {
                 <i className="bi bi-briefcase text-primary fs-4"></i>
               </div>
               <div>
-                <h6 className="card-subtitle mb-1 text-muted">Total Jobs</h6>
+                <h6 className="card-subtitle mb-1 text-muted">
+                  <TranslatedText text="Total Jobs" />
+                </h6>
                 <h2 className="card-title mb-0">{stats.totalJobs}</h2>
               </div>
             </div>
@@ -27,7 +33,9 @@ function WorkerStats({ stats }) {
                 <i className="bi bi-check2-circle text-success fs-4"></i>
               </div>
               <div>
-                <h6 className="card-subtitle mb-1 text-muted">Completed</h6>
+                <h6 className="card-subtitle mb-1 text-muted">
+                  <TranslatedText text="Completed" />
+                </h6>
                 <h2 className="card-title mb-0">{stats.completedJobs}</h2>
               </div>
             </div>
@@ -43,7 +51,9 @@ function WorkerStats({ stats }) {
                 <i className="bi bi-bell text-warning fs-4"></i>
               </div>
               <div>
-                <h6 className="card-subtitle mb-1 text-muted">Requests</h6>
+                <h6 className="card-subtitle mb-1 text-muted">
+                  <TranslatedText text="Requests" />
+                </h6>
                 <h2 className="card-title mb-0">{stats.pendingRequests}</h2>
               </div>
             </div>
@@ -59,7 +69,9 @@ function WorkerStats({ stats }) {
                 <i className="bi bi-star text-info fs-4"></i>
               </div>
               <div>
-                <h6 className="card-subtitle mb-1 text-muted">Rating</h6>
+                <h6 className="card-subtitle mb-1 text-muted">
+                  <TranslatedText text="Rating" />
+                </h6>
                 <h2 className="card-title mb-0">{stats.rating.toFixed(1)}</h2>
               </div>
             </div>

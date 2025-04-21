@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import TranslatedText from '../components/TranslatedText';
 
 // Service icons and their labels
 const services = [
@@ -23,7 +24,9 @@ function ServiceCategories() {
                      style={{ width: '70px', height: '70px' }}>
                   <i className={`bi ${service.icon} fs-3 text-primary`}></i>
                 </div>
-                <h5 className="card-title">{service.name}</h5>
+                <h5 className="card-title">
+                  <TranslatedText text={service.name} />
+                </h5>
               </div>
             </div>
           </Link>

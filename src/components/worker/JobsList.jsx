@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
+import { useTranslation } from '../../context/TranslationContext';
+
+import TranslatedText from '../TranslatedText';
 import WorkerService from '../../services/workerService';
 
 function JobsList({ jobs, onAccept, onDecline, onMarkComplete, type, refreshJobs }) {
   const [filter, setFilter] = useState('all');
   const [loading, setLoading] = useState({});
   const [error, setError] = useState(null);
+  const { currentLanguage } = useTranslation();
   
   // Only apply filter if this is the "all jobs" view
   const filteredJobs = type === 'all' && filter !== 'all' 
@@ -101,7 +105,7 @@ function JobsList({ jobs, onAccept, onDecline, onMarkComplete, type, refreshJobs
         {error && (
           <div className="alert alert-danger mb-3">
             <i className="bi bi-exclamation-triangle-fill me-2"></i>
-            {error}
+            <TranslatedText text={error} />
           </div>
         )}
         
@@ -113,21 +117,21 @@ function JobsList({ jobs, onAccept, onDecline, onMarkComplete, type, refreshJobs
                 className={`btn ${filter === 'all' ? 'btn-primary' : 'btn-outline-primary'}`}
                 onClick={() => setFilter('all')}
               >
-                All
+                <TranslatedText text="All" />
               </button>
               <button 
                 type="button" 
                 className={`btn ${filter === 'upcoming' ? 'btn-primary' : 'btn-outline-primary'}`}
                 onClick={() => setFilter('upcoming')}
               >
-                Upcoming
+                <TranslatedText text="Upcoming" />
               </button>
               <button 
                 type="button" 
                 className={`btn ${filter === 'completed' ? 'btn-primary' : 'btn-outline-primary'}`}
                 onClick={() => setFilter('completed')}
               >
-                Completed
+                <TranslatedText text="Completed" />
               </button>
             </div>
           </div>
@@ -136,7 +140,7 @@ function JobsList({ jobs, onAccept, onDecline, onMarkComplete, type, refreshJobs
         {filteredJobs.length === 0 ? (
           <div className="text-center p-4">
             <i className="bi bi-calendar-x fs-1 text-muted"></i>
-            <p className="mt-2">No jobs found.</p>
+            <p className="mt-2"><TranslatedText text="No jobs found." /></p>
           </div>
         ) : (
           <div className="list-group">
@@ -145,7 +149,7 @@ function JobsList({ jobs, onAccept, onDecline, onMarkComplete, type, refreshJobs
                 <div className="d-flex w-100 justify-content-between mb-2">
                   <h5 className="mb-1">{job.service || job.profession?.name}</h5>
                   <span className={`badge ${getStatusBadgeClass(job.status)}`}>
-                    {job.status}
+                    <TranslatedText text={job.status} />
                   </span>
                 </div>
                 <p className="mb-1">{job.description || job.jobDescription}</p>
@@ -174,11 +178,11 @@ function JobsList({ jobs, onAccept, onDecline, onMarkComplete, type, refreshJobs
                         {loading[job.id || job._id] === 'accept' ? (
                           <>
                             <span className="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
-                            Processing...
+                            <TranslatedText text="Processing..." />
                           </>
                         ) : (
                           <>
-                            <i className="bi bi-check-lg me-1"></i> Accept
+                            <i className="bi bi-check-lg me-1"></i> <TranslatedText text="Accept" />
                           </>
                         )}
                       </button>
@@ -190,11 +194,11 @@ function JobsList({ jobs, onAccept, onDecline, onMarkComplete, type, refreshJobs
                         {loading[job.id || job._id] === 'decline' ? (
                           <>
                             <span className="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
-                            Processing...
+                            <TranslatedText text="Processing..." />
                           </>
                         ) : (
                           <>
-                            <i className="bi bi-x-lg me-1"></i> Decline
+                            <i className="bi bi-x-lg me-1"></i> <TranslatedText text="Decline" />
                           </>
                         )}
                       </button>
@@ -210,11 +214,11 @@ function JobsList({ jobs, onAccept, onDecline, onMarkComplete, type, refreshJobs
                       {loading[job.id || job._id] === 'complete' ? (
                         <>
                           <span className="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
-                          Processing...
+                          <TranslatedText text="Processing..." />
                         </>
                       ) : (
                         <>
-                          <i className="bi bi-check-circle me-1"></i> Mark Complete
+                          <i className="bi bi-check-circle me-1"></i> <TranslatedText text="Mark Complete" />
                         </>
                       )}
                     </button>
